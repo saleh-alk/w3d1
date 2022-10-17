@@ -1,6 +1,6 @@
 class Player
     attr_reader :name, :letter
-    
+
     def initialize(name)
         @name = name
         @letter = ''
@@ -11,7 +11,7 @@ class Player
     end
 
     def guess
-        print 'pick a letter a-z: '
+        print " #{@name} pick a letter a-z: "
         input = gets.chomp()
         until alert_invalid_guess(input)
             puts 'invalid pick one letter from a to z:  '

@@ -7,14 +7,23 @@ class Game
     @@dictionary = {}
     lines_with_newlines.each{|word| @@dictionary[word] = word}
 
-    def initialize(*names)
+    def self.add_names
+        names = []
 
-        @players = names.map!{|ele| Player.new(ele)}
+        puts 'How many players are playing'
+        number_of_players = gets.chomp
+
+        (0...number_of_players.to_i).each do |i|
+            puts 'Enter Players name: '
+            name = gets.chomp
+            names << Player.new(name)
+        end
+        names
+    end
+
+    def initialize
+        @players = Game.add_names #.map!{|ele| Player.new(ele)}
         @fragment = ''
-        # lines_with_newlines = File.readlines("dictionary.txt").map{|line| line.gsub(/\n$/,"")}
-        # @dictionary = {}
-        # lines_with_newlines.each{|word| @dictionary[word] = word}
-
     end
 
     def next_player
@@ -36,7 +45,7 @@ class Game
             k = current_player.guess
             @fragment += k
             if @@dictionary.has_key?(@fragment)
-                puts "#{current_player.name} lose"
+                puts "#{current_player.name} lost"
                 current_player.add_letter
                 puts @fragment
                 @fragment = ""
@@ -58,7 +67,7 @@ class Game
             print "#{ele.name}: #{ele.letter}"
             puts
         end
-        puts "Congrats #{players[0]} you win!!!!"
+        puts "Congrats #{@players[0].name} you win!!!!" if @players.length == 1
     end
 
     def remove_player
@@ -68,11 +77,12 @@ class Game
     def run
         until @players.length == 1
             play_round
-            record
             remove_player
+            record
         end
     end
 end
 
 
-#b = Game.new('saleh', 'nash', 'ike')
+b = Game.new()
+b.run
